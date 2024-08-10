@@ -7,6 +7,8 @@ extends RigidBody3D
 ## The magnituted of the torque applied when rotating
 @export var rotation_torque: float = 100
 
+var _is_transitioning: bool = false
+
 func _physics_process(delta: float) -> void:
 	if Input.is_action_pressed("boost"):
 		var local_up: Vector3 = basis.y
@@ -24,20 +26,30 @@ func _physics_process(delta: float) -> void:
 
 
 func _on_body_entered(body: Node) -> void:
-	if body.is_in_group("Goal"):
-		# Check if there is a next level
-		if "next_level_path" in body and body.next_level_path:
-			print("Level complete!")
-			_complete_level(body.next_level_path)
-		else:
-			print("You win!")
-		
-	if body.is_in_group("Hazard"):
-		_handle_crash()
+	if not _is_transitioning:
+		if body.is_in_group("Goal"):
+			_is_transitioning = true
+			# Check if there is a next level
+			if "next_level_path" in body:
+				_complete_level(body.next_level_path)
+			
+		if body.is_in_group("Hazard"):
+			_is_transitioning = true
+			_handle_crash()
 
 func _handle_crash() -> void:
+	set_physics_process(false)
 	print("You crashed")
-	get_tree().reload_current_scene()
+	var tween: Tween = create_tween()
+	tween.tween_interval(1.0)
+	tween.tween_callback(get_tree().reload_current_scene)	
 	
 func _complete_level(next_level_path: String) -> void:
-	get_tree().change_scene_to_file(next_level_path)
+	set_physics_process(false)
+	if next_level_path:
+		print("Level complete!")
+		var tween: Tween = create_tween()
+		tween.tween_interval(1.0)
+		tween.tween_callback(get_tree().change_scene_to_file.bind(next_level_path))	
+	else:
+		print("You win!")
