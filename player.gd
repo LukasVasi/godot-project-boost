@@ -1,10 +1,17 @@
 class_name Player
-extends Node3D
+extends RigidBody3D
 
-func _process(delta: float) -> void:
+func _physics_process(delta: float) -> void:
 	if Input.is_action_pressed("ui_accept"):
-		position.y += delta
+		var local_up: Vector3 = basis.y
+		apply_central_force(local_up * delta * 1000)
+	
+	var torque_vector: Vector3 = Vector3.ZERO
+	
 	if Input.is_action_pressed("ui_left"):
-		rotate_z(delta)
+		torque_vector += Vector3.FORWARD
+		
 	if Input.is_action_pressed("ui_right"):
-		rotate_z(-delta)
+		torque_vector += Vector3.BACK
+		
+	apply_torque(torque_vector * delta * 100)
