@@ -29,10 +29,14 @@ func _on_body_entered(body: Node) -> void:
 	if not _is_transitioning:
 		if body.is_in_group("Goal"):
 			_is_transitioning = true
+			set_physics_process(false)
 			# Check if there is a next level
-			if "next_level_path" in body:
+			if "next_level_path" in body and body.next_level_path:
+				print("Level complete!")
 				_complete_level(body.next_level_path)
-			
+			else:
+				print("You win!")
+				
 		if body.is_in_group("Hazard"):
 			_is_transitioning = true
 			_handle_crash()
@@ -45,11 +49,6 @@ func _handle_crash() -> void:
 	tween.tween_callback(get_tree().reload_current_scene)	
 	
 func _complete_level(next_level_path: String) -> void:
-	set_physics_process(false)
-	if next_level_path:
-		print("Level complete!")
-		var tween: Tween = create_tween()
-		tween.tween_interval(1.0)
-		tween.tween_callback(get_tree().change_scene_to_file.bind(next_level_path))	
-	else:
-		print("You win!")
+	var tween: Tween = create_tween()
+	tween.tween_interval(1.0)
+	tween.tween_callback(get_tree().change_scene_to_file.bind(next_level_path))	
