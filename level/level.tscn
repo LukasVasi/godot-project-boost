@@ -1,0 +1,56 @@
+[gd_scene load_steps=8 format=3 uid="uid://bpsjxp56sx76b"]
+
+[ext_resource type="PackedScene" uid="uid://cb7xn3320rath" path="res://player.tscn" id="1_utqi6"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_as60p"]
+sky_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
+ground_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
+
+[sub_resource type="Sky" id="Sky_7jvt3"]
+sky_material = SubResource("ProceduralSkyMaterial_as60p")
+
+[sub_resource type="Environment" id="Environment_8g4vc"]
+background_mode = 2
+sky = SubResource("Sky_7jvt3")
+tonemap_mode = 2
+glow_enabled = true
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_fm46s"]
+albedo_color = Color(0.664074, 0.428349, 0.217795, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_o6mdg"]
+albedo_color = Color(5.39064e-06, 0.618762, 0.864244, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_00hso"]
+albedo_color = Color(8.18223e-07, 0.68689, 0.338361, 1)
+
+[node name="Level" type="Node3D"]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_8g4vc")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(-0.866025, -0.433013, 0.25, 0, 0.5, 0.866025, -0.5, 0.75, -0.433013, 0, 0, 0)
+shadow_enabled = true
+
+[node name="Player" parent="." instance=ExtResource("1_utqi6")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -13, 1.125, 0)
+
+[node name="Ground" type="CSGBox3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -4, 0)
+use_collision = true
+size = Vector3(50, 8, 5)
+material = SubResource("StandardMaterial3D_fm46s")
+
+[node name="LaunchPad" type="CSGBox3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -13, 0.125, 0)
+size = Vector3(2, 0.25, 2)
+material = SubResource("StandardMaterial3D_o6mdg")
+
+[node name="LandingPad" type="CSGBox3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 13, 0.125, 0)
+size = Vector3(2, 0.25, 2)
+material = SubResource("StandardMaterial3D_00hso")
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.984808, 0.173648, 0, -0.173648, 0.984808, 0, 6, 11)
