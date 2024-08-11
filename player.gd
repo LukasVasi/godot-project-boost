@@ -10,13 +10,26 @@ extends RigidBody3D
 @onready var explosion_particles: GPUParticles3D = $ExplosionParticles
 @onready var success_particles: GPUParticles3D = $SuccessParticles
 
+@export_category("Rocket movement")
+
 ## The magnitude of the force applied when boosting
 @export var boost_force: float = 1000
 
 ## The magnituted of the torque applied when rotating
 @export var rotation_torque: float = 100
 
+@export_category("Crash threshold")
+
+## The linear velocity threshold. 
+## If the player collides with the landing pad at this or higher velocity, it counts as a crash.
+@export var crash_linear_velocity: float = 2
+
 var _is_transitioning: bool = false
+
+func _process(_delta: float) -> void:
+	if Input.is_action_just_pressed("ui_cancel"):
+		get_tree().quit()
+
 
 func _physics_process(delta: float) -> void:
 	if Input.is_action_pressed("boost"):
@@ -51,8 +64,14 @@ func _physics_process(delta: float) -> void:
 	):
 		rocket_audio.stop()
 
+
 func _on_body_entered(body: Node) -> void:
 	if not _is_transitioning:
+		if body.is_in_group("Hazard") || linear_velocity.length() >= crash_linear_velocity:
+			_is_transitioning = true
+			_handle_crash()
+			return
+			
 		if body.is_in_group("Goal"):
 			_is_transitioning = true
 			set_physics_process(false)
@@ -64,10 +83,7 @@ func _on_body_entered(body: Node) -> void:
 				_complete_level(body.next_level_path)
 			else:
 				print("You win!")
-				
-		if body.is_in_group("Hazard"):
-			_is_transitioning = true
-			_handle_crash()
+
 
 func _handle_crash() -> void:
 	set_physics_process(false)
@@ -77,7 +93,8 @@ func _handle_crash() -> void:
 	var tween: Tween = create_tween()
 	tween.tween_interval(2.0)
 	tween.tween_callback(get_tree().reload_current_scene)	
-	
+
+
 func _complete_level(next_level_path: String) -> void:
 	var tween: Tween = create_tween()
 	tween.tween_interval(2.0)

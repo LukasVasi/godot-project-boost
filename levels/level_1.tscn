@@ -1,7 +1,19 @@
-[gd_scene load_steps=9 format=3 uid="uid://bpsjxp56sx76b"]
+[gd_scene load_steps=10 format=3 uid="uid://bpsjxp56sx76b"]
 
 [ext_resource type="PackedScene" uid="uid://cb7xn3320rath" path="res://player.tscn" id="1_ho1rs"]
 [ext_resource type="Script" path="res://landing_pad.gd" id="2_ejkfk"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_o6mdg"]
+albedo_color = Color(5.39064e-06, 0.618762, 0.864244, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_00hso"]
+albedo_color = Color(8.18223e-07, 0.68689, 0.338361, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_fm46s"]
+albedo_color = Color(0.664074, 0.428349, 0.217795, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_pbld1"]
+albedo_color = Color(0.664074, 0.428349, 0.217795, 1)
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_as60p"]
 sky_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
@@ -11,37 +23,17 @@ ground_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
 sky_material = SubResource("ProceduralSkyMaterial_as60p")
 
 [sub_resource type="Environment" id="Environment_8g4vc"]
-background_mode = 2
+background_mode = 1
+background_color = Color(0.0971463, 0.0542612, 0.0192034, 1)
 sky = SubResource("Sky_7jvt3")
+ambient_light_source = 3
 tonemap_mode = 2
 glow_enabled = true
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_fm46s"]
-albedo_color = Color(0.664074, 0.428349, 0.217795, 1)
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_o6mdg"]
-albedo_color = Color(5.39064e-06, 0.618762, 0.864244, 1)
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_00hso"]
-albedo_color = Color(8.18223e-07, 0.68689, 0.338361, 1)
-
 [node name="Level" type="Node3D"]
-
-[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
-environment = SubResource("Environment_8g4vc")
-
-[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
-transform = Transform3D(-0.866025, -0.433013, 0.25, 0, 0.5, 0.866025, -0.5, 0.75, -0.433013, 0, 0, 0)
-shadow_enabled = true
 
 [node name="Player" parent="." instance=ExtResource("1_ho1rs")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -13, 1.125, 0)
-
-[node name="Ground" type="CSGBox3D" parent="." groups=["Hazard"]]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -4, 0)
-use_collision = true
-size = Vector3(50, 8, 5)
-material = SubResource("StandardMaterial3D_fm46s")
 
 [node name="LaunchPad" type="CSGBox3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -13, 0.125, 0)
@@ -58,4 +50,95 @@ script = ExtResource("2_ejkfk")
 next_level_path = "res://levels/level_2.tscn"
 
 [node name="Camera3D" type="Camera3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 0.984808, 0.173648, 0, -0.173648, 0.984808, 0, 6, 11)
+transform = Transform3D(1, 0, 0, 0, 0.984808, 0.173648, 0, -0.173648, 0.984808, 0, 7, 12)
+
+[node name="Environment" type="Node3D" parent="."]
+
+[node name="Ground" type="CSGBox3D" parent="Environment" groups=["Environment", "Hazard"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -4, 0)
+use_collision = true
+size = Vector3(50, 8, 5)
+material = SubResource("StandardMaterial3D_fm46s")
+
+[node name="Ceiling" type="CSGBox3D" parent="Environment" groups=["Environment", "Hazard"]]
+transform = Transform3D(0.996153, 0.0871005, -0.00963631, -0.0875678, 0.985179, -0.147495, -0.0033534, 0.147771, 0.989016, -16.8231, 15.312, 0)
+use_collision = true
+size = Vector3(30, 8, 5)
+material = SubResource("StandardMaterial3D_pbld1")
+
+[node name="Ceiling2" type="CSGBox3D" parent="Environment" groups=["Environment", "Hazard"]]
+transform = Transform3D(0.981729, -0.0579579, 0.181243, 0.109899, 0.950265, -0.291409, -0.155339, 0.306003, 0.939272, 7.79074, 15.1517, -0.471418)
+use_collision = true
+size = Vector3(20, 8, 5)
+material = SubResource("StandardMaterial3D_pbld1")
+
+[node name="Wall" type="CSGBox3D" parent="Environment" groups=["Environment", "Hazard"]]
+transform = Transform3D(-0.108906, -0.983193, 0.146532, 0.994046, -0.107218, 0.0193902, -0.00335341, 0.147771, 0.989016, -18.005, 3.64926, 0)
+use_collision = true
+size = Vector3(10, 5, 5)
+material = SubResource("StandardMaterial3D_pbld1")
+
+[node name="Wall2" type="CSGBox3D" parent="Environment" groups=["Environment", "Hazard"]]
+transform = Transform3D(0.513998, -0.848117, 0.128462, 0.857785, 0.508783, -0.0731102, -0.00335341, 0.147771, 0.989016, -16.9396, 11.1033, 0)
+use_collision = true
+size = Vector3(6, 5, 5)
+material = SubResource("StandardMaterial3D_pbld1")
+
+[node name="Wall3" type="CSGBox3D" parent="Environment" groups=["Environment", "Hazard"]]
+transform = Transform3D(-0.355285, -0.880452, 0.313969, 0.922463, -0.275944, 0.270032, -0.151112, 0.385563, 0.910223, 18.6294, 6.07073, -0.990739)
+use_collision = true
+size = Vector3(15, 6, 8)
+material = SubResource("StandardMaterial3D_pbld1")
+
+[node name="Background" type="Node3D" parent="."]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="Background"]
+environment = SubResource("Environment_8g4vc")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="Background"]
+transform = Transform3D(0.984808, -0.111619, 0.133022, 0, 0.766044, 0.642788, -0.173648, -0.633022, 0.754407, 0, 0, 0)
+light_color = Color(0.836804, 0.74534, 0.655142, 1)
+light_energy = 0.5
+shadow_enabled = true
+
+[node name="Block" type="CSGBox3D" parent="Background" groups=["Hazard"]]
+transform = Transform3D(-0.606095, 0.57301, -0.551641, -0.67076, -0.740954, -0.0326834, -0.427469, 0.35021, 0.833441, -17.1728, -4, -13.066)
+use_collision = true
+size = Vector3(20, 8, 5)
+material = SubResource("StandardMaterial3D_fm46s")
+
+[node name="Block2" type="CSGBox3D" parent="Background" groups=["Hazard"]]
+transform = Transform3D(-0.309802, 0.809346, -0.498981, -0.84929, -0.4715, -0.237475, -0.427469, 0.35021, 0.833441, -5.44849, -0.203333, -15.0147)
+use_collision = true
+size = Vector3(20, 8, 5)
+material = SubResource("StandardMaterial3D_fm46s")
+
+[node name="Block3" type="CSGBox3D" parent="Background" groups=["Hazard"]]
+transform = Transform3D(0.59959, 0.177361, -0.780407, -0.574242, -0.583867, -0.573886, -0.557438, 0.792239, -0.248232, 14.305, -1.76387, -15.2485)
+use_collision = true
+size = Vector3(30, 6, 6)
+material = SubResource("StandardMaterial3D_fm46s")
+
+[node name="Block4" type="CSGBox3D" parent="Background" groups=["Hazard"]]
+transform = Transform3D(0.657307, -0.596914, -0.460045, 0.550779, 0.797152, -0.247368, 0.514383, -0.0907863, 0.852741, -9.39677, 12.8526, -5.66132)
+use_collision = true
+size = Vector3(10, 4, 3)
+material = SubResource("StandardMaterial3D_fm46s")
+
+[node name="Block5" type="CSGBox3D" parent="Background" groups=["Hazard"]]
+transform = Transform3D(0.787423, -0.343859, -0.511592, 0.339668, 0.934622, -0.105388, 0.514383, -0.0907864, 0.852741, 12.3182, 12.8526, -3.74491)
+use_collision = true
+size = Vector3(10, 4, 3)
+material = SubResource("StandardMaterial3D_fm46s")
+
+[node name="OmniLight3D" type="OmniLight3D" parent="Background"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.9396, 6.80181, 0)
+light_energy = 0.8
+omni_range = 12.0
+omni_attenuation = 0.5
+
+[node name="OmniLight3D2" type="OmniLight3D" parent="Background"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.93758, 6.80181, 0)
+light_energy = 0.8
+omni_range = 12.0
+omni_attenuation = 0.5
