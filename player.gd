@@ -24,6 +24,17 @@ extends RigidBody3D
 ## If the player collides with the landing pad at this or higher velocity, it counts as a crash.
 @export var crash_linear_velocity: float = 2
 
+@export_category("Fuel")
+
+## The amount of fuel the rocket has for boosting and rotating
+@export var fuel_amount: float = 100
+
+## The amount of fuel that is lost per second while firing the rocket
+@export var fuel_loss: float = 10
+
+## Flag that determines if the rocket is firing (either moving or rotating)
+var _is_firing: bool = false
+
 var _is_transitioning: bool = false
 
 func _process(_delta: float) -> void:
@@ -32,36 +43,43 @@ func _process(_delta: float) -> void:
 
 
 func _physics_process(delta: float) -> void:
-	if Input.is_action_pressed("boost"):
-		var local_up: Vector3 = basis.y
-		apply_central_force(local_up * delta * boost_force)
-		booster_particles.emitting = true
+	_is_firing = false
+	
+	if fuel_amount > 0:
+		# Process boosting
+		if Input.is_action_pressed("boost"):
+			var local_up: Vector3 = basis.y
+			apply_central_force(local_up * delta * boost_force)
+			booster_particles.emitting = true
+			_is_firing = true
+		else:
+			booster_particles.emitting = false
+		
+		var torque_vector: Vector3 = Vector3.ZERO
+		
+		# Process rotation
+		if Input.is_action_pressed("rotate_left"):
+			torque_vector += Vector3.BACK
+			right_booster_particles.emitting = true
+			_is_firing = true
+		else:
+			right_booster_particles.emitting = false
+			
+		if Input.is_action_pressed("rotate_right"):
+			torque_vector += Vector3.FORWARD
+			left_booster_particles.emitting = true
+			_is_firing = true
+		else:
+			left_booster_particles.emitting = false
+		
+		apply_torque(torque_vector * delta * rotation_torque)
+	
+	if _is_firing:
+		fuel_amount -= delta * fuel_loss
+		
 		if not rocket_audio.playing:
 			rocket_audio.play()
 	else:
-		booster_particles.emitting = false
-	
-	var torque_vector: Vector3 = Vector3.ZERO
-	
-	if Input.is_action_pressed("rotate_left"):
-		torque_vector += Vector3.BACK
-		right_booster_particles.emitting = true
-	else:
-		right_booster_particles.emitting = false
-		
-	if Input.is_action_pressed("rotate_right"):
-		torque_vector += Vector3.FORWARD
-		left_booster_particles.emitting = true
-	else:
-		left_booster_particles.emitting = false
-	
-	apply_torque(torque_vector * delta * rotation_torque)
-	
-	if (
-		not Input.is_action_pressed("boost")
-		and not Input.is_action_pressed("rotate_left")
-		and not Input.is_action_pressed("rotate_right")
-	):
 		rocket_audio.stop()
 
 
