@@ -9,6 +9,7 @@ extends RigidBody3D
 @onready var left_booster_particles: GPUParticles3D = $LeftBoosterParticles
 @onready var explosion_particles: GPUParticles3D = $ExplosionParticles
 @onready var success_particles: GPUParticles3D = $SuccessParticles
+@onready var level_timer: Timer = $LevelTimer
 
 @export_category("Rocket movement")
 
@@ -32,12 +33,21 @@ extends RigidBody3D
 ## The amount of fuel that is lost per second while firing the rocket
 @export var fuel_loss: float = 10
 
+## The time that has passed since the player started playing the level in seconds
+var level_time: float = 0.0
+
 ## Flag that determines if the rocket is firing (either moving or rotating)
 var _is_firing: bool = false
 
 var _is_transitioning: bool = false
 
-func _process(_delta: float) -> void:
+## Flag used to determine if the player has started playing (moving). Used to start score timer.
+var _playing: bool = false
+
+func _process(delta: float) -> void:
+	if _playing:
+		level_time += delta
+	
 	if Input.is_action_just_pressed("ui_cancel"):
 		get_tree().quit()
 
@@ -79,6 +89,9 @@ func _physics_process(delta: float) -> void:
 		
 		if not rocket_audio.playing:
 			rocket_audio.play()
+			
+		if not _playing:
+			_playing = true
 	else:
 		rocket_audio.stop()
 
@@ -92,6 +105,7 @@ func _on_body_entered(body: Node) -> void:
 			
 		if body.is_in_group("Goal"):
 			_is_transitioning = true
+			_playing = false
 			set_physics_process(false)
 			success_audio.play()
 			success_particles.emitting = true
@@ -104,6 +118,7 @@ func _on_body_entered(body: Node) -> void:
 
 
 func _handle_crash() -> void:
+	_playing = false
 	set_physics_process(false)
 	print("You crashed")
 	explosion_audio.play()

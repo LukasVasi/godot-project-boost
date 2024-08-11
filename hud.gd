@@ -4,8 +4,14 @@ extends CanvasLayer
 @onready var player: Player = $".."
 @onready var velocity_label: Label = $VelocityLabel
 @onready var fuel_label: Label = $FuelLabel
+@onready var time_label: Label = $TimeLabel
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
 	velocity_label.text = str(round(player.linear_velocity.length())) + " m/s"
 	fuel_label.text = str(round(player.fuel_amount))
+	var time: float = player.level_time
+	var minutes: int = floor(time/60)
+	var seconds: int = floor(time - minutes * 60)
+	var centiseconds: int = round((time - floor(time)) * 100)
+	time_label.text = "%02d:%02d:%03d" % [minutes, seconds, centiseconds]
