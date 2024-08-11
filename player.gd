@@ -1,6 +1,10 @@
 class_name Player
 extends RigidBody3D
 
+@onready var explosion_audio: AudioStreamPlayer = $ExplosionAudio
+@onready var success_audio: AudioStreamPlayer = $SuccessAudio
+@onready var rocket_audio: AudioStreamPlayer3D = $RocketAudio
+
 ## The magnitude of the force applied when boosting
 @export var boost_force: float = 1000
 
@@ -13,6 +17,10 @@ func _physics_process(delta: float) -> void:
 	if Input.is_action_pressed("boost"):
 		var local_up: Vector3 = basis.y
 		apply_central_force(local_up * delta * boost_force)
+		if not rocket_audio.playing:
+			rocket_audio.play()
+	elif rocket_audio.playing:
+		rocket_audio.stop()
 	
 	var torque_vector: Vector3 = Vector3.ZERO
 	
@@ -30,6 +38,7 @@ func _on_body_entered(body: Node) -> void:
 		if body.is_in_group("Goal"):
 			_is_transitioning = true
 			set_physics_process(false)
+			success_audio.play()
 			# Check if there is a next level
 			if "next_level_path" in body and body.next_level_path:
 				print("Level complete!")
@@ -44,11 +53,12 @@ func _on_body_entered(body: Node) -> void:
 func _handle_crash() -> void:
 	set_physics_process(false)
 	print("You crashed")
+	explosion_audio.play()
 	var tween: Tween = create_tween()
-	tween.tween_interval(1.0)
+	tween.tween_interval(2.0)
 	tween.tween_callback(get_tree().reload_current_scene)	
 	
 func _complete_level(next_level_path: String) -> void:
 	var tween: Tween = create_tween()
-	tween.tween_interval(1.0)
+	tween.tween_interval(2.0)
 	tween.tween_callback(get_tree().change_scene_to_file.bind(next_level_path))	
