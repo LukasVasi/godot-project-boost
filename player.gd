@@ -9,7 +9,6 @@ extends RigidBody3D
 @onready var left_booster_particles: GPUParticles3D = $LeftBoosterParticles
 @onready var explosion_particles: GPUParticles3D = $ExplosionParticles
 @onready var success_particles: GPUParticles3D = $SuccessParticles
-@onready var level_timer: Timer = $LevelTimer
 
 @export_category("Rocket movement")
 
@@ -33,6 +32,10 @@ extends RigidBody3D
 ## The amount of fuel that is lost per second while firing the rocket
 @export var fuel_loss: float = 10
 
+@export_category("Level")
+
+@export var current_level: int = 0
+
 ## The time that has passed since the player started playing the level in seconds
 var level_time: float = 0.0
 
@@ -43,6 +46,15 @@ var _is_transitioning: bool = false
 
 ## Flag used to determine if the player has started playing (moving). Used to start score timer.
 var _playing: bool = false
+
+func _ready() -> void:
+	if current_level:
+		var previous_time = SaveManager.get_level_data(str(current_level))
+		if previous_time > 0:
+			print("Previous best time is " + str(previous_time))
+		else:
+			print("No previously set time was found")
+
 
 func _process(delta: float) -> void:
 	if _playing:
@@ -109,6 +121,8 @@ func _on_body_entered(body: Node) -> void:
 			set_physics_process(false)
 			success_audio.play()
 			success_particles.emitting = true
+			if current_level:
+				SaveManager.update_level_data(str(current_level), level_time)
 			# Check if there is a next level
 			if "next_level_path" in body and body.next_level_path:
 				print("Level complete!")

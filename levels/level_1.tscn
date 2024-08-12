@@ -34,6 +34,7 @@ glow_enabled = true
 
 [node name="Player" parent="." instance=ExtResource("1_ho1rs")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -13, 1.125, 0)
+current_level = 1
 
 [node name="LaunchPad" type="CSGBox3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -13, 0.125, 0)
