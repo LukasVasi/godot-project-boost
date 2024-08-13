@@ -1,4 +1,4 @@
-[gd_scene load_steps=20 format=3 uid="uid://cb7xn3320rath"]
+[gd_scene load_steps=29 format=3 uid="uid://cb7xn3320rath"]
 
 [ext_resource type="Script" path="res://player.gd" id="1_gabim"]
 [ext_resource type="AudioStream" uid="uid://ukgxc6bc1ol8" path="res://audio/sounds/SFX - Death Explosion.ogg" id="2_atyxn"]
@@ -144,6 +144,48 @@ shadow_mesh = SubResource("ArrayMesh_maal6")
 [sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_efww8"]
 points = PackedVector3Array(-0.862081, -0.801713, -0.454021, -0.784616, -0.801713, -0.588342, -0.0776346, -0.801713, 0.904826, -0.607237, -0.724504, 0.133541, -0.644198, -0.505793, 0.164527, -0.66462, -0.156775, 0.181628, -0.637954, 0.235871, 0.159265, -0.669514, 0.235871, -0.0222652, -0.632722, 0.464914, -0.00881851, -0.703437, -0.133526, -0.362379, 0.784447, -0.801713, -0.588342, -0.625802, -0.133526, -0.4967, -5.96046e-08, 0.829432, -0.374364, 0.0774658, -0.801713, 0.904826, -0.0776346, -0.133526, 0.721396, -0.607913, 0.464914, 0.134126, -0.575677, 0.667839, 0.0120823, -0.0275097, 2.1305, -0.0507663, -0.0180585, 2.1305, -0.0672824, 0.862081, -0.801713, -0.454021, 0.625633, -0.133526, -0.4967, -5.96046e-08, 2.1305, -0.0737135, -5.96046e-08, 1.67471, -0.203211, -5.96046e-08, 1.26599, -0.306108, 0.607069, -0.724504, 0.133541, 0.644029, -0.505793, 0.164527, 0.664451, -0.156775, 0.181628, 0.637785, 0.235871, 0.159265, 0.607744, 0.464914, 0.134126, 0.0774658, -0.133526, 0.721396, -0.00961995, 2.1305, -0.0196344, -0.561163, 0.667839, 0.0952473, -0.514751, 0.83058, 0.0344447, -0.024303, 2.1305, -0.0319118, 0.703268, -0.133526, -0.362379, 0.632553, 0.464914, -0.00881851, 0.669345, 0.235871, -0.0222652, 0.0178897, 2.1305, -0.0672824, 0.575508, 0.667839, 0.0120823, 0.560994, 0.667839, 0.0952473, 0.00945115, 2.1305, -0.0196344, -0.511376, 0.83058, 0.0535917, 0.0273408, 2.1305, -0.0507663, 0.514582, 0.83058, 0.0344447, 0.511207, 0.83058, 0.0535917, 0.0241342, 2.1305, -0.0319118)
 
+[sub_resource type="Gradient" id="Gradient_uhnbe"]
+offsets = PackedFloat32Array(0, 0.204473, 0.434505, 0.578275, 0.830671, 1)
+colors = PackedColorArray(0.972657, 0.532455, 0, 1, 0.900906, 0.621547, 7.70092e-07, 1, 0.494109, 0.213252, 0, 1, 0.230416, 0.1752, 0.12535, 1, 0.436467, 0.373439, 0.309471, 1, 0.813258, 0.813258, 0.813258, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_55115"]
+gradient = SubResource("Gradient_uhnbe")
+
+[sub_resource type="Curve" id="Curve_5xj4m"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(0.460411, 0), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_i4aha"]
+curve = SubResource("Curve_5xj4m")
+
+[sub_resource type="Curve" id="Curve_w7ove"]
+max_value = 2.0
+_data = [Vector2(0, 1.71577), 0.0, 0.242917, 0, 0, Vector2(0.472141, 0.863061), 0.0, 0.0, 0, 0, Vector2(1, 1.19217), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="CurveTexture" id="CurveTexture_0capg"]
+curve = SubResource("Curve_w7ove")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_7he3w"]
+direction = Vector3(0, -1, 0)
+spread = 15.0
+initial_velocity_min = 3.0
+initial_velocity_max = 5.0
+gravity = Vector3(0, 0, 0)
+damping_min = 9.0
+damping_max = 9.0
+scale_max = 1.2
+scale_curve = SubResource("CurveTexture_0capg")
+color_ramp = SubResource("GradientTexture1D_55115")
+emission_curve = SubResource("CurveTexture_i4aha")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_pomlp"]
+vertex_color_use_as_albedo = true
+
+[sub_resource type="BoxMesh" id="BoxMesh_aksjj"]
+material = SubResource("StandardMaterial3D_pomlp")
+size = Vector3(0.1, 0.1, 0.1)
+
 [node name="Player" type="RigidBody3D"]
 axis_lock_linear_z = true
 axis_lock_angular_x = true
@@ -172,16 +214,25 @@ stream = ExtResource("3_yxnuo")
 stream = ExtResource("4_jswhb")
 
 [node name="BoosterParticles" parent="." instance=ExtResource("5_d72cm")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.764725, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.742895, -0.0557708)
 emitting = false
+lifetime = 0.6
+process_material = SubResource("ParticleProcessMaterial_7he3w")
+draw_pass_1 = SubResource("BoxMesh_aksjj")
 
 [node name="RightBoosterParticles" parent="." instance=ExtResource("5_d72cm")]
-transform = Transform3D(0.958902, 0, 0, 0, 1, 0, 0, 0, 1, 0.493835, -0.687332, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, -0.68, 0.04)
 emitting = false
+lifetime = 0.6
+process_material = SubResource("ParticleProcessMaterial_7he3w")
+draw_pass_1 = SubResource("BoxMesh_aksjj")
 
 [node name="LeftBoosterParticles" parent="." instance=ExtResource("5_d72cm")]
-transform = Transform3D(0.958902, 0, 0, 0, 1, 0, 0, 0, 1, -0.493835, -0.687332, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.5, -0.68, 0.04)
 emitting = false
+lifetime = 0.6
+process_material = SubResource("ParticleProcessMaterial_7he3w")
+draw_pass_1 = SubResource("BoxMesh_aksjj")
 
 [node name="ExplosionParticles" parent="." instance=ExtResource("6_mw7sq")]
 
