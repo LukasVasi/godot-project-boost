@@ -1,0 +1,7 @@
+[gd_resource type="Theme" load_steps=2 format=3 uid="uid://b814ixns7ygai"]
+
+[ext_resource type="FontFile" uid="uid://06wam8nrvdlj" path="res://fonts/DS-DIGII.TTF" id="1_80f1u"]
+
+[resource]
+default_font = ExtResource("1_80f1u")
+default_font_size = 32

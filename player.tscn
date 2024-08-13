@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=3 uid="uid://cb7xn3320rath"]
+[gd_scene load_steps=19 format=3 uid="uid://cb7xn3320rath"]
 
 [ext_resource type="Script" path="res://player.gd" id="1_gabim"]
 [ext_resource type="AudioStream" uid="uid://ukgxc6bc1ol8" path="res://audio/sounds/SFX - Death Explosion.ogg" id="2_atyxn"]
@@ -8,6 +8,10 @@
 [ext_resource type="PackedScene" uid="uid://beeny4jfedewv" path="res://particles/explosion_particles.tscn" id="6_mw7sq"]
 [ext_resource type="PackedScene" uid="uid://dixuol88ld041" path="res://particles/success_particles.tscn" id="7_enrlt"]
 [ext_resource type="Script" path="res://hud.gd" id="8_dvus0"]
+[ext_resource type="Theme" uid="uid://b814ixns7ygai" path="res://themes/hud_dials.tres" id="9_rts3r"]
+[ext_resource type="Texture2D" uid="uid://b6tg2mw87xngv" path="res://sprites/velocity_dial.png" id="10_6mssv"]
+[ext_resource type="Texture2D" uid="uid://bpuaeo81qbddr" path="res://sprites/fuel_dial.png" id="11_pvthe"]
+[ext_resource type="Texture2D" uid="uid://dhxu3251liw6t" path="res://sprites/time_dial.png" id="12_6161i"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_i0px4"]
 resource_name = "MRocketWhite"
@@ -157,23 +161,27 @@ emitting = false
 script = ExtResource("8_dvus0")
 
 [node name="VelocityLabel" type="Label" parent="HUD"]
-offset_right = 40.0
-offset_bottom = 23.0
+offset_left = 60.0
+offset_top = 14.0
+offset_right = 241.0
+offset_bottom = 47.0
 size_flags_horizontal = 4
+theme = ExtResource("9_rts3r")
 text = "Velocity"
 horizontal_alignment = 1
 vertical_alignment = 1
-metadata/_edit_use_anchors_ = true
 
 [node name="TimeLabel" type="Label" parent="HUD"]
 anchors_preset = 5
 anchor_left = 0.5
 anchor_right = 0.5
 offset_left = -30.5
+offset_top = 14.0
 offset_right = 30.5
-offset_bottom = 23.0
+offset_bottom = 47.0
 grow_horizontal = 2
 size_flags_horizontal = 4
+theme = ExtResource("9_rts3r")
 text = "Time"
 horizontal_alignment = 1
 vertical_alignment = 1
@@ -182,13 +190,34 @@ vertical_alignment = 1
 anchors_preset = 1
 anchor_left = 1.0
 anchor_right = 1.0
-offset_left = -61.0
-offset_bottom = 23.0
+offset_left = -106.0
+offset_top = 14.0
+offset_right = -42.0
+offset_bottom = 47.0
 grow_horizontal = 0
 size_flags_horizontal = 4
+theme = ExtResource("9_rts3r")
 text = "Fuel
 "
 horizontal_alignment = 1
 vertical_alignment = 1
+
+[node name="VelocityDial" type="Sprite2D" parent="HUD"]
+z_index = -1
+texture_filter = 2
+texture_repeat = 1
+position = Vector2(128, 32)
+texture = ExtResource("10_6mssv")
+
+[node name="FuelDial" type="Sprite2D" parent="HUD"]
+z_index = -1
+texture_filter = 2
+texture_repeat = 1
+position = Vector2(1076, 32)
+texture = ExtResource("11_pvthe")
+
+[node name="TimeDial" type="Sprite2D" parent="."]
+position = Vector2(576, 33)
+texture = ExtResource("12_6161i")
 
 [connection signal="body_entered" from="." to="." method="_on_body_entered"]

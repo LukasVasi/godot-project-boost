@@ -8,8 +8,8 @@ extends CanvasLayer
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta: float) -> void:
-	velocity_label.text = str(round(player.linear_velocity.length())) + " m/s"
-	fuel_label.text = str(round(player.fuel_amount))
+	velocity_label.text = "%03d m/s" % round(player.linear_velocity.length())
+	fuel_label.text = "%03d %%" % round(player.fuel_amount)
 	var time: float = player.level_time
 	var minutes: int = floor(time/60)
 	var seconds: int = floor(time - minutes * 60)
