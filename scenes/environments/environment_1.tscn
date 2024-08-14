@@ -1,0 +1,24 @@
+[gd_scene load_steps=2 format=3 uid="uid://bp57n3nedrim"]
+
+[ext_resource type="PackedScene" uid="uid://dr4pnj2xc14gu" path="res://models/Environment1.glb" id="1_08o78"]
+
+[node name="Environment12" instance=ExtResource("1_08o78")]
+
+[node name="Block2" parent="Environment1" index="1"]
+transform = Transform3D(0.657628, 0.343213, -0.607841, -0.742537, 1.12742, -0.112869, 0.758376, 0.806258, 0.416579, -5.76874, -5.02711, -12.676)
+
+[node name="StaticBody3D" parent="Environment1/Environment" index="0" groups=["Hazard"]]
+
+[node name="StaticBody3D" parent="Environment1/Rock1" index="0" groups=["Hazard"]]
+
+[node name="StaticBody3D" parent="Environment1/Rock2" index="0" groups=["Hazard"]]
+
+[node name="StaticBody3D" parent="Environment1/Rock3" index="0" groups=["Hazard"]]
+
+[node name="StaticBody3D" parent="Environment1/Rock4" index="0" groups=["Hazard"]]
+
+[node name="StaticBody3D" parent="Environment1/Rock5" index="0" groups=["Hazard"]]
+
+[node name="StaticBody3D" parent="Environment1/Rocks6" index="0" groups=["Hazard"]]
+
+[node name="StaticBody3D" parent="Environment1/Rocks7" index="0" groups=["Hazard"]]

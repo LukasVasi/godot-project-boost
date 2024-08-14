@@ -11,13 +11,17 @@ config_version=5
 [application]
 
 config/name="Project Boost"
-run/main_scene="res://levels/level_1.tscn"
+run/main_scene="res://scenes/levels/level_1.tscn"
 config/features=PackedStringArray("4.2", "Forward Plus")
 config/icon="res://icon.svg"
 
 [autoload]
 
-SaveManager="*res://save_manager.gd"
+SaveManager="*res://scripts/save_manager.gd"
+
+[filesystem]
+
+import/blender/enabled=false
 
 [input]
 

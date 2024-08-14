@@ -1,6 +1,6 @@
 [gd_scene load_steps=5 format=3 uid="uid://bkj3myb8n3jr6"]
 
-[ext_resource type="Script" path="res://moving_obstacle.gd" id="1_sj54f"]
+[ext_resource type="Script" path="res://scripts/moving_obstacle.gd" id="1_sj54f"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_17xmt"]
 albedo_color = Color(0.596447, 0.377402, 0.187529, 1)

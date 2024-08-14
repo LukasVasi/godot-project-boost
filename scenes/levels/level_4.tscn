@@ -1,8 +1,8 @@
 [gd_scene load_steps=13 format=3 uid="uid://c0tdel5eejcm6"]
 
-[ext_resource type="PackedScene" uid="uid://cb7xn3320rath" path="res://player.tscn" id="1_dy0u6"]
-[ext_resource type="Script" path="res://landing_pad.gd" id="2_vswy0"]
-[ext_resource type="PackedScene" uid="uid://bkj3myb8n3jr6" path="res://moving_obstacle.tscn" id="3_cjbo4"]
+[ext_resource type="PackedScene" uid="uid://cb7xn3320rath" path="res://scenes/player.tscn" id="1_dy0u6"]
+[ext_resource type="Script" path="res://scripts/landing_pad.gd" id="2_vswy0"]
+[ext_resource type="PackedScene" uid="uid://bkj3myb8n3jr6" path="res://scenes/moving_obstacle.tscn" id="3_cjbo4"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_as60p"]
 sky_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
